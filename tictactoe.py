@@ -30,50 +30,40 @@ def isWinner(x):
     board[3]==x and board[6]==x and board[9]==x or
     board[2]==x and board[5]==x and board[8]==x ):
         return True
+    
 def is_draw():
     possibleMoves=[x for x,letter in enumerate(board) if letter==" " and x!=0]
     return len(possibleMoves) > 0
 
-def minimax(depth, is_max):
-    if isWinner('X'):
-        return -100 - depth
-    elif isWinner('o'):
-        return 100 - depth
-    elif is_draw():
-        return 0 - depth
-
-    possibleMoves = [x for x,letter in enumerate(board) if letter == " " and x != 0]
-
-    if is_max:
-        best = -1000
-        for move in possibleMoves:
-            board[move] = 'o'
-            best = max(best, minimax(depth + 1, not is_max))
-            board[move] = " "
-
-        return best
-    else:
-        best = 1000
-        for move in possibleMoves:
-            board[move] = 'X'
-            best = min(best, minimax(depth + 1, not is_max))
-            board[move] = " "
-
-        return best
 
 def compTurn():
-    possibleMoves = [x for x, letter in enumerate(board) if letter == " " and x != 0]
-    best = -1000
-    best_move = None
-    for move in possibleMoves:
-        board[move] = 'o'
-        score =  minimax(0, False)
-        print(score,end=" ")
-        board[move] = ' '
-        if score > best:
-            best = score
-            best_move = move
-    board[best_move] = 'o'
+    possibleMoves=[x for x in range(1,10) if board[x]==" "]
+    for x in ['O','X']:
+        for let in possibleMoves:
+            board[let]=x
+            if isWinner(x):
+                return let
+            board[let]=" "
+
+    choices=[]
+    corners=[1,3,7,9]
+    for x in corners:
+        if x in possibleMoves:
+            choices.append(x)
+    if len(choices)>0:
+        x=random.choice(choices)
+        return x
+
+    if 5 in possibleMoves:
+        return 5
+
+    edges=[2,4,6,8]
+    for x in edges:
+        if x in possibleMoves:
+            choices.append(x)
+    if len(choices)>0:
+        x=random.choice(choices)
+        return x
 
 
 def getInput():
