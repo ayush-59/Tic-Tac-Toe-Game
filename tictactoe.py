@@ -91,7 +91,8 @@ while(1):
         break;
     if(isboardFull()):
         break;
-    compTurn()
+    compMove = compTurn()
+    board[compMove] = 'o'
     boarddes()
     if(isWinner('o')):
         print("YOU LOSE")
